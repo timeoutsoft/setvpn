@@ -17,7 +17,7 @@ conn ikev2-vpn
     dpddelay=300s
     rekey=no
     left=%any
-    leftid=@server_domain_or_IP
+    leftid=$$$leftip$$$
     leftcert=server-cert.pem
     leftsendcert=always
     leftsubnet=0.0.0.0/0
@@ -114,14 +114,27 @@ def set_sysctl_conf():
 
     text=text+"\n#added by vpnset\nnet/ipv4/ip_no_pmtu_disc=1\n"
     os.rename('sysctl.conf', 'sysctl.conf.orig')
-    with open('sysctl.conf', 'a') as f:
+    with open('sysctl.conf', 'w') as f:
         f.write(text)
     print("File sysctl.conf modified.")
 
+def set_ipsec_conf(srv_ip, clnt_subn):
+    print("Starting to modify ipsec.conf.")
+
+    text=ipsec_conf_text.replace('$$$rightsourceip$$$',clnt_subn).replace('$$$leftip$$$',srv_ip)
+    #os.rename('ipsec.conf', 'ipsec.conf.orig')
+    with open('ipsec.conf', 'w') as f:
+        f.write(text)
+    print("File ipsec.conf modified.")
+
+
 if __name__ == '__main__':
     server_ip=find_ip()
-    server_ip=str(input("Server IP (discovered) = "+ server_ip) or server_ip)
+    server_ip=str(input("Enter Server IP (autodiscovered by default) = "+ server_ip) or server_ip)
     print ("IP used in scripts: "+server_ip)
-    print ("Subnet for clients: "+get_random_subnet())
+    clients_subnet=get_random_subnet()
+    print ("Subnet for clients: "+clients_subnet)
+    input("Press a key to continue")
     set_before_rules()
     set_sysctl_conf()
+    set_ipsec_conf(srv_ip=server_ip, clnt_subn=clients_subnet)
