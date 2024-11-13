@@ -1,5 +1,12 @@
 import os
 import random
+import secrets
+import string
+
+
+ipsec_secrets_text="""
+: RSA "server-key.pem"
+"""
 
 ipsec_conf_text="""
 config setup
@@ -65,6 +72,18 @@ def find_ip ():
     external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
     return external_ip
 
+def generate_username():
+    alphabet = string.ascii_letters
+    username = ''.join(secrets.choice(alphabet) for i in range(3))
+    return username.lower()
+
+
+def generate_password():
+    alphabet = string.ascii_letters + string.digits
+    password = ''.join(secrets.choice(alphabet) for i in range(10))
+    return password
+
+
 def set_before_rules():
     print("Starting to modify before.rules.")
     path = r"before.rules"
@@ -128,13 +147,71 @@ def set_ipsec_conf(srv_ip, clnt_subn):
     print("File ipsec.conf modified.")
 
 
+def set_ipsec_secrets(u1n, u1p, u2n, u2p, u3n, u3p):
+    print("Starting to modify ipsec.secrets")
+
+    text=ipsec_secrets_text+"\n"+u1n+':"'+u1p+'"\n'
+    text = text+ u2n + ':"' + u2p + '"\n'
+    text = text + u3n + ':"' + u3p + '"\n'
+
+    with open('ipsec.secrets', 'w') as f:
+        f.write(text)
+    #print (text)
+    print("File ipsec.secrets created.")
+
+def copy_source_files():
+    os.system('cp -f /etc/ipsec.conf ./**')
+    os.system('cp -f /etc/ipsec.secrests ./**')
+    os.system('cp -f /etc/ufw/before.rules ./**')
+    os.system('cp -f /etc/ufw/sysctl.conf ./**')
+
+
+def os_pre_operations(root_ca_name='TimeOutSoft CA', server_dn_ip='127.0.0.1'):
+    #mkdir -p ~/pki/{cacerts,certs,private}
+    #chmod 700 ~/pki
+    #pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem
+    #pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem --type rsa --dn "CN=Poland VPN root CA" --outform pem > ~/pki/cacerts/ca-cert.pem
+    #pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/server-key.pem
+    #pki --pub --in ~/pki/private/server-key.pem --type rsa | pki --issue --lifetime 1825  --cacert ~/pki/cacerts/ca-cert.pem  --cakey ~/pki/private/ca-key.pem --dn "CN=91.149.253.28" --san 91.149.253.28  --flag serverAuth --flag ikeIntermediate --outform pem  > ~/pki/certs/server-cert.pem
+    #cp -r ~/pki/* /etc/ipsec.d/
+
+    os.system('mkdir -p ~/pki/{cacerts,certs,private}')
+    os.system('chmod 700 ~/pki')
+    os.system('pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/ca-key.pem')
+    os.system('pki --self --ca --lifetime 3650 --in ~/pki/private/ca-key.pem --type rsa --dn "CN='+root_ca_name.strip()+'" --outform pem > ~/pki/cacerts/ca-cert.pem')
+    os.system('pki --gen --type rsa --size 4096 --outform pem > ~/pki/private/server-key.pem')
+    os.system('pki --pub --in ~/pki/private/server-key.pem --type rsa | pki --issue --lifetime 1825  --cacert ~/pki/cacerts/ca-cert.pem  --cakey ~/pki/private/ca-key.pem --dn "CN='+server_dn_ip+'" --san '+server_dn_ip+'  --flag serverAuth --flag ikeIntermediate --outform pem  > ~/pki/certs/server-cert.pem')
+    os.system('cp -r ~/pki/* /etc/ipsec.d/')
+    os.system('cat /etc/ipsec.d/cacerts/ca-cert.pem')
+
+    return True
+
+
+
 if __name__ == '__main__':
+    copy_source_files()
     server_ip=find_ip()
     server_ip=str(input("Enter Server IP (autodiscovered by default) = "+ server_ip) or server_ip)
     print ("IP used in scripts: "+server_ip)
     clients_subnet=get_random_subnet()
     print ("Subnet for clients: "+clients_subnet)
+
+    un1=generate_username()
+    pw1=generate_password()
+    print("Username1:Password1    "+ str(un1)+":"+pw1)
+
+    un2 = generate_username()
+    pw2 = generate_password()
+    print("Username2:Password2    " + str(un2) + ":" + pw2)
+
+    un3 = generate_username()
+    pw3 = generate_password()
+    print("Username3:Password3    " + str(un3) + ":" + pw3)
+
+
     input("Press a key to continue")
-    set_before_rules()
-    set_sysctl_conf()
-    set_ipsec_conf(srv_ip=server_ip, clnt_subn=clients_subnet)
+    os_pre_operations()
+    #set_before_rules()
+    #set_sysctl_conf()
+    #set_ipsec_conf(srv_ip=server_ip, clnt_subn=clients_subnet)
+    #set_ipsec_secrets(un1, pw1, un2, pw2, un3, pw3)
