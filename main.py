@@ -8,15 +8,9 @@ author_info="""
 *****
 Disclaimer:
 ***** 
-Eta proga mozhet rabotat ne tak, kak khotelos.
-Poka server zhiv, mozhno nazhat CTRL+C
-I etot script ostavovitsa.
-*****
 
 ******
 It's test script for our "GreatIdea" 'bout free VPN for BDO guild 'TimeOut' mmbrz
-Thnx to Zlo101 and Sanych. They're Inspired me :)    
-Wrote by Shirker aka Progulschik
 ******
 """
 print(author_info)
@@ -219,7 +213,7 @@ def os_pre_operations(root_ca_name='TimeOutSoft CA', server_dn_ip='127.0.0.1'):
 if __name__ == '__main__':
     copy_source_files()
     server_ip=find_ip()
-    server_ip=str(input("Enter Server IP (autodiscovered by default) = "+ server_ip) or server_ip)
+    #server_ip=str(input("Enter Server IP (autodiscovered by default) = "+ server_ip) or server_ip)
     print ("IP used in scripts: "+server_ip)
     clients_subnet=get_random_subnet()
     print ("Subnet for clients: "+clients_subnet)
