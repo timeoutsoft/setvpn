@@ -159,9 +159,9 @@ def set_ipsec_conf(srv_ip, clnt_subn):
 def set_ipsec_secrets(u1n, u1p, u2n, u2p, u3n, u3p):
     print("Starting to modify ipsec.secrets")
 
-    text=ipsec_secrets_text+"\n"+u1n+':"'+u1p+'"\n'
-    text = text+ u2n + ':"' + u2p + '"\n'
-    text = text + u3n + ':"' + u3p + '"\n'
+    text=ipsec_secrets_text+"\n"+u1n+' : EAP "'+u1p+'"\n'
+    text = text+ u2n + ' : EAP "' + u2p + '"\n'
+    text = text + u3n + ' : EAP "' + u3p + '"\n'
 
     with open('./ipsec.secrets', 'w') as f:
         f.write(text)
@@ -220,15 +220,15 @@ if __name__ == '__main__':
 
     un1=generate_username()
     pw1=generate_password()
-    print("Username1:Password1    "+ str(un1)+":"+pw1)
+    print("Username1 : Password1    "+ str(un1)+" : "+pw1)
 
     un2 = generate_username()
     pw2 = generate_password()
-    print("Username2:Password2    " + str(un2) + ":" + pw2)
+    print("Username2 : Password2    " + str(un2) + " : " + pw2)
 
     un3 = generate_username()
     pw3 = generate_password()
-    print("Username3:Password3    " + str(un3) + ":" + pw3)
+    print("Username3 : Password3    " + str(un3) + " : " + pw3)
 
 
     #input("Press a key to continue")
@@ -236,6 +236,7 @@ if __name__ == '__main__':
     server_dn_ip_main = server_ip
 
     os_pre_operations(root_ca_name=root_ca_name_main, server_dn_ip=server_dn_ip_main)
+    print ("Cert Data: " +root_ca_name_main + "   "+ server_dn_ip_main)
     print("Copying config files")
     copy_source_files()
     print("Starting changes")
