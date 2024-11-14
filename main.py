@@ -66,10 +66,9 @@ COMMIT
 -A FORWARD --match policy --pol ipsec --dir in -s 192.168.0.0/16 -o eth0 -p tcp -m tcp --tcp-flags SYN,RST SYN -m tcpmss --mss 1361:1536 -j TCPMSS --set-mss 1360
 COMMIT
 
-
 """
 
-ufw_rule2=""" 
+ufw_rule2="""
 
 #added by vpnset
 -A ufw-before-forward --match policy --pol ipsec --dir in --proto esp -s 192.168.0.0/16 -j ACCEPT
