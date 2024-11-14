@@ -11,3 +11,5 @@ python3 main.py
 ufw allow OpenSSH
 ufw allow 500,4500/udp
 ufw --force enable
+reboot now
+
