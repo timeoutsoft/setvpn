@@ -233,7 +233,8 @@ if __name__ == '__main__':
 
 
     #input("Press a key to continue")
-    root_ca_name_main="TimeOutSoft CA"
+    ca_uniq = generate_password()
+    root_ca_name_main="TimeOutSoft CA "+ca_uniq
     server_dn_ip_main = server_ip
 
     os_pre_operations(root_ca_name=root_ca_name_main, server_dn_ip=server_dn_ip_main)
