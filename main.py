@@ -231,7 +231,7 @@ if __name__ == '__main__':
     print("Username3:Password3    " + str(un3) + ":" + pw3)
 
 
-    input("Press a key to continue")
+    #input("Press a key to continue")
     root_ca_name_main="TimeOutSoft CA"
     server_dn_ip_main = server_ip
 
