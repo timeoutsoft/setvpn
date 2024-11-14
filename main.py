@@ -217,7 +217,7 @@ if __name__ == '__main__':
     clients_subnet=get_random_subnet()
     print ("Subnet for clients: "+clients_subnet)
 
-    print("Users for VPN:")
+    print("\n********\nUsers for VPN:")
     print("User  Password")
     un1=generate_username()
     pw1=generate_password()
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
     un3 = generate_username()
     pw3 = generate_password()
-    print(str(un3) + "    " + str(pw3))
+    print(str(un3) + "    " + str(pw3)+"\n********\n")
 
 
     #input("Press a key to continue")
