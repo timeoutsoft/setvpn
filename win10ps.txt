@@ -58,3 +58,5 @@ Add-VpnConnectionRoute -ConnectionName "TOO" -DestinationPrefix 23.227.38.74/32 
 Add-VpnConnectionRoute -ConnectionName "TOO" -DestinationPrefix 34.126.226.51/32 -PassThru
 Add-VpnConnectionRoute -ConnectionName "TOO" -DestinationPrefix 66.22.216.0/24 -PassThru
 Add-VpnConnectionRoute -ConnectionName "TOO" -DestinationPrefix 66.22.217.0/24 -PassThru
+Add-VpnConnectionRoute -ConnectionName "TOO" -DestinationPrefix 35.217.0.0/16 -PassThru
+Add-VpnConnectionRoute -ConnectionName "TOO" -DestinationPrefix 34.0.0.0/16 -PassThru
