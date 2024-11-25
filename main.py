@@ -155,12 +155,14 @@ def set_ipsec_conf(srv_ip, clnt_subn):
     print("File ipsec.conf modified.")
 
 
-def set_ipsec_secrets(u1n, u1p, u2n, u2p, u3n, u3p):
+def set_ipsec_secrets(u1n, u1p, u2n, u2p, u3n, u3p, u4n, u4p, u5n, u5p):
     print("Starting to modify ipsec.secrets")
 
     text=ipsec_secrets_text+"\n"+u1n+' : EAP "'+u1p+'"\n'
     text = text+ u2n + ' : EAP "' + u2p + '"\n'
     text = text + u3n + ' : EAP "' + u3p + '"\n'
+    text = text + u4n + ' : EAP "' + u4p + '"\n'
+    text = text + u5n + ' : EAP "' + u5p + '"\n'
 
     with open('./ipsec.secrets', 'w') as f:
         f.write(text)
@@ -229,7 +231,15 @@ if __name__ == '__main__':
 
     un3 = generate_username()
     pw3 = generate_password()
-    print(str(un3) + "    " + str(pw3)+"\n********\n")
+    print(str(un3) + "    " + str(pw3))
+
+    un4 = generate_username()
+    pw4 = generate_password()
+    print(str(un4) + "    " + str(pw4))
+
+    un5 = generate_username()
+    pw5 = generate_password()
+    print(str(un5) + "    " + str(pw5)+"\n********\n")
 
 
     #input("Press a key to continue")
