@@ -255,5 +255,5 @@ if __name__ == '__main__':
     set_before_rules()
     set_sysctl_conf()
     set_ipsec_conf(srv_ip=server_ip, clnt_subn=clients_subnet)
-    set_ipsec_secrets(un1, pw1, un2, pw2, un3, pw3)
+    set_ipsec_secrets(un1, pw1, un2, pw2, un3, pw3, un4, pw4, un5, pw5)
     back_copy_source_files()
